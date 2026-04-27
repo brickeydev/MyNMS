@@ -15,7 +15,7 @@ export default function BottomNav({ navLinks }: BottomNavProps) {
 
   return (
     <div className="fixed right-0 bottom-0 left-0 z-40 mx-4 mb-4 md:hidden">
-      <nav className="mx-auto flex max-w-md items-center justify-between rounded-3xl border border-border/70 bg-card/95 px-3 py-2 shadow-bubble backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-md items-center justify-between rounded-3xl border border-border/70 bg-card/95 px-2 py-2 shadow-bubble backdrop-blur-xl">
         {navLinks.map((link) => {
           const Icon = link.icon
           const isActive =
@@ -23,7 +23,7 @@ export default function BottomNav({ navLinks }: BottomNavProps) {
             (pathname === link.href || pathname.startsWith(`${link.href}/`))
 
           const className = cn(
-            "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-medium transition-colors",
+            "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[10px] font-medium transition-colors",
             isActive ? "text-primary" : "text-muted-foreground"
           )
 
