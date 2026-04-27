@@ -1,0 +1,22 @@
+services:
+  mynms:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATA_DIR: /data
+      DB_PATH: /data/mynms.db
+      PHOTO_DIR: /data/photos
+    volumes:
+      - mynms-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  mynms-data:

@@ -1,0 +1,24 @@
+{
+  "name": "MyNMS – Deine Plattform für Neumünster",
+  "short_name": "MyNMS",
+  "description": "Fundmeldungen, lokale Nachrichten und vorgestellte Orte aus Neumünster.",
+  "start_url": "/de",
+  "display": "standalone",
+  "background_color": "#F0F7F0",
+  "theme_color": "#5BA55B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
