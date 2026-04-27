@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const acceptLanguage = request.headers.get('accept-language') || 'de'
-  const locale = acceptLanguage.split(',')[0].split('-')[0].toLowerCase()
   const validLocales = ['de', 'en', 'tr']
-  const lang = validLocales.includes(locale) ? locale : 'de'
+
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value
+  const acceptLanguage = request.headers.get('accept-language') || 'de'
+  const headerLocale = acceptLanguage.split(',')[0].split('-')[0].toLowerCase()
+
+  const lang = validLocales.includes(cookieLocale ?? '')
+    ? cookieLocale!
+    : validLocales.includes(headerLocale)
+      ? headerLocale
+      : 'de'
 
   return NextResponse.json({
     name: 'MyNMS – Deine Plattform für Neumünster',

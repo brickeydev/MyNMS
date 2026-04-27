@@ -178,11 +178,11 @@ export default function PrivacyPage() {
           </P>
           <P>Wir setzen folgende(n) Hoster ein:</P>
           <P>
-            NetBird GmbH
+            Hetzner Online GmbH
             <br />
-            Brunnenstraße 196
+            Industriestr. 25
             <br />
-            10119 Berlin
+            91710 Gunzenhausen
           </P>
         </Sub>
       </Section>
