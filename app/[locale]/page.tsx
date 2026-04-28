@@ -16,7 +16,15 @@ export const metadata: Metadata = {
   title: "Start",
   description:
     "Deine lokale Community-Plattform für Neumünster – Fundtiere, Fundsachen und aktuelle Nachrichten.",
-  alternates: { canonical: "https://mynms.de/de" },
+  alternates: {
+    canonical: "https://mynms.de",
+    languages: {
+      "x-default": "https://mynms.de",
+      de: "https://mynms.de/de",
+      en: "https://mynms.de/en",
+      tr: "https://mynms.de/tr",
+    },
+  },
 }
 
 export const dynamic = "force-dynamic"

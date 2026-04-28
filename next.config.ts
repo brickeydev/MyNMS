@@ -14,6 +14,15 @@ const withPWAWrapper = withPWA({
 const nextConfig: NextConfig = {
   output: "standalone",
   serverExternalPackages: ["better-sqlite3"],
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/de",
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default withNextIntl(withPWAWrapper(nextConfig))
