@@ -67,7 +67,7 @@
   },
   "news": {
     "title": "Neumünster haberleri",
-    "description": "Yerel RSS kaynaklari bir arada, tarihe gore sirali ve saatlik olarak onbellege alinir.",
+    "description": "Yerel RSS kaynaklari bir arada, tarihe gore sirali ve 15 dakikada bir onbellege alinir.",
     "all": "Tum kaynaklar",
     "by": "Yazar",
     "empty": "Bu kaynak icin haber bulunamadi."

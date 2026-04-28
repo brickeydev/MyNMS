@@ -67,7 +67,7 @@
   },
   "news": {
     "title": "Nachrichten aus Neumünster",
-    "description": "Lokale RSS-Feeds gebündelt, nach Datum sortiert und stündlich zwischengespeichert.",
+    "description": "Lokale RSS-Feeds gebündelt, nach Datum sortiert und alle 15 Minuten zwischengespeichert.",
     "all": "Alle Quellen",
     "by": "Von",
     "empty": "Keine Nachrichten für diese Quelle gefunden."

@@ -6,7 +6,7 @@ import Parser from "rss-parser"
 import { db, NEWS_IMAGE_DIR } from "@/lib/db"
 import type { NewsRecord, NewsSource } from "@/lib/types"
 
-const ONE_HOUR = 60 * 60 * 1000
+const FIFTEEN_MINUTES = 15 * 60 * 1000
 
 const FEEDS: Record<NewsSource, string> = {
   NDR: "https://www.ndr.de/nachrichten/schleswig-holstein/Neumuenster-Aktuelle-Nachrichten-und-Videos,neumuenster770~rss2.html",
@@ -147,7 +147,7 @@ export async function refreshNewsCache(force = false) {
 
   const isStale =
     !row?.fetched_at ||
-    Date.now() - new Date(row.fetched_at).getTime() > ONE_HOUR
+    Date.now() - new Date(row.fetched_at).getTime() > FIFTEEN_MINUTES
 
   if (!force && !isStale) {
     return

@@ -203,7 +203,7 @@ MyNMS aggregiert Nachrichten aus sechs lokalen Quellen:
 | FEUERWEHR | Feuerwehr Neumünster (Presseportal) | `https://www.presseportal.de/rss/dienststelle_178961.rss2` |
 | STADT | Offizielle Meldungen der Stadt Neumünster | `https://www.neumuenster.de/aktuelle-meldungen/rss` |
 
-Feeds werden serverseitig gecacht (TTL 1 Stunde). Vorschaubilder werden ebenfalls serverseitig heruntergeladen und über die eigene API ausgeliefert, sodass keine externen Bild-URLs an den Browser weitergegeben werden.
+Feeds werden serverseitig gecacht (TTL 15 Minuten). Vorschaubilder werden ebenfalls serverseitig heruntergeladen und über die eigene API ausgeliefert, sodass keine externen Bild-URLs an den Browser weitergegeben werden.
 
 ---
 
