@@ -4,7 +4,7 @@ export type AppLocale = "de" | "en" | "tr"
 export type EntryCategory = "tiere" | "gegenstaende"
 export type EntryType = "vermisst" | "gefunden"
 export type EntryStatus = "offen" | "erledigt"
-export type DirectoryCategory = "kultur" | "sport" | "vereine" | "sonstiges"
+export type DirectoryCategory = "kultur" | "sport" | "handwerk" | "vereine" | "sonstiges"
 export type NewsSource = "NDR" | "KN" | "POLIZEI" | "FEUERWEHR" | "STADT" | "SHZ"
 
 export interface NavLink {
@@ -96,6 +96,7 @@ export const ENTRY_TYPES: EntryType[] = ["vermisst", "gefunden"]
 export const DIRECTORY_CATEGORIES: DirectoryCategory[] = [
   "kultur",
   "sport",
+  "handwerk",
   "vereine",
   "sonstiges",
 ]

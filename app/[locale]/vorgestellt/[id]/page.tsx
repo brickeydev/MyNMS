@@ -55,6 +55,7 @@ export const dynamic = "force-dynamic"
 const categoryMessageKeys: Record<DirectoryCategory, string> = {
   kultur: "culture",
   sport: "sport",
+  handwerk: "handwerk",
   vereine: "clubs",
   sonstiges: "other",
 }

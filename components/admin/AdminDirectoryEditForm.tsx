@@ -41,6 +41,7 @@ import {
 const CATEGORY_LABELS: Record<DirectoryCategory, string> = {
   kultur: "Kultur & Kreative",
   sport: "Sport & Gesundheit",
+  handwerk: "Handwerk & Dienstleistungen",
   vereine: "Vereine & Initiativen",
   sonstiges: "Sonstiges",
 }
