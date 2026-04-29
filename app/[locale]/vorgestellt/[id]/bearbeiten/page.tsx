@@ -64,6 +64,7 @@ function DirectoryEditContent({ params }: PageParams) {
   const categoryMessageKeys: Record<DirectoryCategory, string> = {
     kultur: "culture",
     sport: "sport",
+    handwerk: "handwerk",
     vereine: "clubs",
     sonstiges: "other",
   }
