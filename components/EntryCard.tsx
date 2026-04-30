@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 import type { AppLocale, EntryRecord } from "@/lib/types"
+import { formatDate } from "@/lib/utils"
 
 interface EntryCardProps {
   entry: EntryRecord
@@ -27,9 +28,7 @@ export default function EntryCard({
   postedOnLabel,
   photoMissingLabel,
 }: EntryCardProps) {
-  const formattedDate = new Intl.DateTimeFormat(locale, {
-    dateStyle: "medium",
-  }).format(new Date(entry.created_at))
+  const formattedDate = formatDate(entry.created_at, locale)
 
   return (
     <article className="bubble-card-soft flex flex-col gap-4">

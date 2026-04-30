@@ -16,6 +16,7 @@ import {
   type EntryCategory,
   type EntryRecord,
 } from "@/lib/types"
+import { getSafeLocale } from "@/lib/utils"
 
 export async function generateMetadata({
   params,
@@ -81,7 +82,7 @@ export default async function EntryDetailPage({
     tokenCookie && entry.owner_token && tokenCookie === entry.owner_token
   )
 
-  const formattedDate = new Intl.DateTimeFormat(locale, {
+  const formattedDate = new Intl.DateTimeFormat(getSafeLocale(locale), {
     dateStyle: "full",
     timeStyle: "short",
   }).format(new Date(entry.created_at))

@@ -3,6 +3,7 @@ import { Clock3, ExternalLink } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { AppLocale, NewsRecord } from "@/lib/types"
+import { getSafeLocale } from "@/lib/utils"
 
 interface NewsItemProps {
   item: NewsRecord
@@ -21,7 +22,7 @@ export default function NewsItem({
   anonymousLabel,
   compact = false,
 }: NewsItemProps) {
-  const formattedDate = new Intl.DateTimeFormat(locale, {
+  const formattedDate = new Intl.DateTimeFormat(getSafeLocale(locale), {
     dateStyle: "medium",
     timeStyle: compact ? undefined : "short",
   }).format(new Date(item.pub_date))
