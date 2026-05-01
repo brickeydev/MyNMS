@@ -1,6 +1,6 @@
 # MyNMS – Deine Plattform für Neumünster
 
-MyNMS ist eine lokale Community-Plattform für die Stadt Neumünster. Sie bündelt Fundmeldungen (Tiere & Gegenstände), lokale Nachrichten aus mehreren Quellen und ein Verzeichnis vorgestellter Orte in einer klar strukturierten, mobiloptimierten Webanwendung. Die Plattform richtet sich an Einwohnerinnen und Einwohner Neumünsters, die eine datenschutzfreundliche Alternative zu sozialen Netzwerken für nachbarschaftliche Anliegen suchen.
+MyNMS ist eine lokale Community-Plattform für die Stadt Neumünster. Sie bündelt Fundmeldungen (Tiere & Gegenstände), lokale Nachrichten aus mehreren Quellen und ein Verzeichnis vorgestellter Orte in einer klar strukturierten, mobiloptimierten Webanwendung. Die Plattform richtet sich an Einwohner Neumünsters, die eine datenschutzfreundliche Alternative zu sozialen Netzwerken für nachbarschaftliche Anliegen suchen.
 
 ---
 
@@ -214,7 +214,7 @@ MyNMS ist von Grund auf datenschutzfreundlich konzipiert:
 - **Kein Google Analytics, keine Drittanbieter-Tracker** – das Analytics-System ist vollständig selbst implementiert
 - **IP-Anonymisierung** – IP-Adressen werden nie gespeichert; stattdessen wird ein täglicher, rotierender Salt verwendet, um einen nicht rückverfolgbaren Hash zu erzeugen
 - **Datenlöschung** – Seitenaufrufe und News-Cache-Einträge werden nach 365 Tagen automatisch gelöscht
-- **Two-Click-Einwilligung für OpenStreetMap** – Karten werden erst geladen, nachdem die Nutzerin oder der Nutzer aktiv zugestimmt hat (kein automatisches Laden externer Ressourcen)
+- **Two-Click-Einwilligung für OpenStreetMap** – Karten werden erst geladen, nachdem der Nutzer aktiv zugestimmt hat (kein automatisches Laden externer Ressourcen)
 - **Serverseitiges Bild-Caching** – Nachrichtenbilder werden über die eigene API ausgeliefert; externe Bild-Server erhalten keine direkten Anfragen vom Browser
 - **Analytics deaktivierbar** – Über `ANALYTICS_ENABLED=false` kann das gesamte Tracking serverseitig abgeschaltet werden
 
