@@ -9,3 +9,4 @@ data
 *.md
 *.sh
 .env*
+LICENSE
