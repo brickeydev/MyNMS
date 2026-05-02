@@ -120,6 +120,8 @@ export async function PATCH(
       phone = ?, email = ?, social_instagram = ?, social_facebook = ?,
       social_spotify = ?, social_tiktok = ?, social_soundcloud = ?,
       social_youtube = ?, social_linkedin = ?,
+      social_whatsapp = ?, social_twitter = ?, social_bluesky = ?,
+      social_mastodon = ?, social_bandcamp = ?,
       opening_hours = ?, lat = ?, lng = ?
      WHERE id = ?`
   ).run(
@@ -137,6 +139,11 @@ export async function PATCH(
     String(formData.get("social_soundcloud") ?? "").trim() || null,
     String(formData.get("social_youtube") ?? "").trim() || null,
     String(formData.get("social_linkedin") ?? "").trim() || null,
+    String(formData.get("social_whatsapp") ?? "").trim() || null,
+    String(formData.get("social_twitter") ?? "").trim() || null,
+    String(formData.get("social_bluesky") ?? "").trim() || null,
+    String(formData.get("social_mastodon") ?? "").trim() || null,
+    String(formData.get("social_bandcamp") ?? "").trim() || null,
     String(formData.get("opening_hours") ?? "").trim() || null,
     latNum !== null && Number.isFinite(latNum) ? latNum : null,
     lngNum !== null && Number.isFinite(lngNum) ? lngNum : null,

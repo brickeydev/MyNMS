@@ -34,7 +34,8 @@ export async function GET(
     .prepare(
       `SELECT id, created_at, category, name, description, logo_path, address, website,
               phone, email, social_instagram, social_facebook, social_spotify, social_tiktok,
-              social_soundcloud, social_youtube, social_linkedin, opening_hours, lat, lng, approved
+              social_soundcloud, social_youtube, social_linkedin, social_whatsapp, social_twitter,
+              social_bluesky, social_mastodon, social_bandcamp, opening_hours, lat, lng, approved
        FROM directory WHERE id = ?`
     )
     .get(Number(id)) as DirectoryRecord | undefined
@@ -121,6 +122,8 @@ export async function PATCH(
       phone = ?, email = ?, social_instagram = ?, social_facebook = ?,
       social_spotify = ?, social_tiktok = ?, social_soundcloud = ?,
       social_youtube = ?, social_linkedin = ?,
+      social_whatsapp = ?, social_twitter = ?, social_bluesky = ?,
+      social_mastodon = ?, social_bandcamp = ?,
       opening_hours = ?, lat = ?, lng = ?${approved !== undefined ? ", approved = ?" : ""}
      WHERE id = ?`
   ).run(
@@ -139,6 +142,11 @@ export async function PATCH(
       fields.social_soundcloud?.trim() || null,
       fields.social_youtube?.trim() || null,
       fields.social_linkedin?.trim() || null,
+      fields.social_whatsapp?.trim() || null,
+      fields.social_twitter?.trim() || null,
+      fields.social_bluesky?.trim() || null,
+      fields.social_mastodon?.trim() || null,
+      fields.social_bandcamp?.trim() || null,
       fields.opening_hours?.trim() || null,
       lat !== null && Number.isFinite(lat) ? lat : null,
       lng !== null && Number.isFinite(lng) ? lng : null,
