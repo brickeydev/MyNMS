@@ -48,7 +48,8 @@ export async function GET(request: Request) {
         .prepare(
           `SELECT id, created_at, category, name, description, logo_path, address, website,
                   phone, email, social_instagram, social_facebook, social_spotify, social_tiktok,
-                  social_soundcloud, social_youtube, social_linkedin, opening_hours, lat, lng, approved
+                  social_soundcloud, social_youtube, social_linkedin, social_whatsapp, social_twitter,
+                  social_bluesky, social_mastodon, social_bandcamp, opening_hours, lat, lng, approved
            FROM directory
            WHERE approved = 1 AND category = ?
            ORDER BY name COLLATE NOCASE ASC`
@@ -58,7 +59,8 @@ export async function GET(request: Request) {
         .prepare(
           `SELECT id, created_at, category, name, description, logo_path, address, website,
                   phone, email, social_instagram, social_facebook, social_spotify, social_tiktok,
-                  social_soundcloud, social_youtube, social_linkedin, opening_hours, lat, lng, approved
+                  social_soundcloud, social_youtube, social_linkedin, social_whatsapp, social_twitter,
+                  social_bluesky, social_mastodon, social_bandcamp, opening_hours, lat, lng, approved
            FROM directory
            WHERE approved = 1
            ORDER BY name COLLATE NOCASE ASC`
@@ -136,9 +138,10 @@ export async function POST(request: Request) {
           category, name, description, logo_path, address, website, phone, email,
           social_instagram, social_facebook, social_spotify, social_tiktok,
           social_soundcloud, social_youtube, social_linkedin,
+          social_whatsapp, social_twitter, social_bluesky, social_mastodon, social_bandcamp,
           opening_hours, lat, lng, approved, owner_token
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`
     )
     .run(
       category,
@@ -156,6 +159,11 @@ export async function POST(request: Request) {
       fields.social_soundcloud || null,
       fields.social_youtube || null,
       fields.social_linkedin || null,
+      fields.social_whatsapp || null,
+      fields.social_twitter || null,
+      fields.social_bluesky || null,
+      fields.social_mastodon || null,
+      fields.social_bandcamp || null,
       fields.opening_hours || null,
       lat !== null && Number.isFinite(lat) ? lat : null,
       lng !== null && Number.isFinite(lng) ? lng : null,
