@@ -102,6 +102,11 @@ function migrate(instance: Database.Database) {
     "ALTER TABLE directory ADD COLUMN social_youtube TEXT",
     "ALTER TABLE directory ADD COLUMN social_linkedin TEXT",
     "ALTER TABLE news_cache ADD COLUMN image_path TEXT",
+    "ALTER TABLE directory ADD COLUMN social_whatsapp TEXT",
+    "ALTER TABLE directory ADD COLUMN social_twitter TEXT",
+    "ALTER TABLE directory ADD COLUMN social_bluesky TEXT",
+    "ALTER TABLE directory ADD COLUMN social_mastodon TEXT",
+    "ALTER TABLE directory ADD COLUMN social_bandcamp TEXT",
   ]
   for (const sql of migrations) {
     try {

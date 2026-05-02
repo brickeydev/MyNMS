@@ -60,6 +60,11 @@ export interface DirectoryRecord {
   social_soundcloud: string | null
   social_youtube: string | null
   social_linkedin: string | null
+  social_whatsapp: string | null
+  social_twitter: string | null
+  social_bluesky: string | null
+  social_mastodon: string | null
+  social_bandcamp: string | null
   opening_hours: string | null
   lat: number | null
   lng: number | null

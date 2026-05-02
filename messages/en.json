@@ -179,6 +179,11 @@
     "soundcloud": "SoundCloud",
     "youtube": "YouTube",
     "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "twitter": "X / Twitter",
+    "bluesky": "Bluesky",
+    "mastodon": "Mastodon",
+    "bandcamp": "Bandcamp",
     "openingHoursField": "Opening hours",
     "submit": "Suggest entry",
     "success": "The suggestion was stored and is waiting for approval.",
@@ -188,6 +193,9 @@
     "logoHint": "JPEG, PNG or WebP – max. 5 MB",
     "socialPlaceholder": "username or https://…",
     "spotifyPlaceholder": "https://open.spotify.com/…",
+    "whatsappPlaceholder": "Phone number or wa.me/…",
+    "mastodonPlaceholder": "@user@instance.social",
+    "bandcampPlaceholder": "https://…",
     "edit": "Edit"
   },
   "footer": {

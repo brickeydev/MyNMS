@@ -376,6 +376,61 @@ export default function AdminDirectoryEditForm({ id }: Props) {
           />
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="social_whatsapp">WhatsApp</Label>
+          <Input
+            id="social_whatsapp"
+            name="social_whatsapp"
+            defaultValue={entry.social_whatsapp ?? ""}
+            placeholder="Telefonnummer oder wa.me/…"
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_twitter">X / Twitter</Label>
+          <Input
+            id="social_twitter"
+            name="social_twitter"
+            defaultValue={entry.social_twitter ?? ""}
+            placeholder="benutzername oder https://…"
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_bluesky">Bluesky</Label>
+          <Input
+            id="social_bluesky"
+            name="social_bluesky"
+            defaultValue={entry.social_bluesky ?? ""}
+            placeholder="benutzername oder https://…"
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_mastodon">Mastodon</Label>
+          <Input
+            id="social_mastodon"
+            name="social_mastodon"
+            defaultValue={entry.social_mastodon ?? ""}
+            placeholder="@benutzer@instanz.social"
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_bandcamp">Bandcamp</Label>
+          <Input
+            id="social_bandcamp"
+            name="social_bandcamp"
+            defaultValue={entry.social_bandcamp ?? ""}
+            placeholder="https://…"
+            className="rounded-2xl"
+          />
+        </div>
+
         <div className="space-y-2 md:col-span-2">
           <Label>Öffnungszeiten</Label>
           <OpeningHoursInput value={openingHours} onChange={setOpeningHours} />

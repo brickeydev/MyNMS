@@ -257,6 +257,56 @@ export default function DirectoryForm() {
           />
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="social_whatsapp">{t("whatsapp")}</Label>
+          <Input
+            id="social_whatsapp"
+            name="social_whatsapp"
+            placeholder={t("whatsappPlaceholder")}
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_twitter">{t("twitter")}</Label>
+          <Input
+            id="social_twitter"
+            name="social_twitter"
+            placeholder={t("socialPlaceholder")}
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_bluesky">{t("bluesky")}</Label>
+          <Input
+            id="social_bluesky"
+            name="social_bluesky"
+            placeholder={t("socialPlaceholder")}
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_mastodon">{t("mastodon")}</Label>
+          <Input
+            id="social_mastodon"
+            name="social_mastodon"
+            placeholder={t("mastodonPlaceholder")}
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="social_bandcamp">{t("bandcamp")}</Label>
+          <Input
+            id="social_bandcamp"
+            name="social_bandcamp"
+            placeholder={t("bandcampPlaceholder")}
+            className="rounded-2xl"
+          />
+        </div>
+
         <div className="space-y-2 md:col-span-2">
           <Label>{t("openingHoursField")}</Label>
           <OpeningHoursInput
