@@ -179,6 +179,11 @@
     "soundcloud": "SoundCloud",
     "youtube": "YouTube",
     "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "twitter": "X / Twitter",
+    "bluesky": "Bluesky",
+    "mastodon": "Mastodon",
+    "bandcamp": "Bandcamp",
     "openingHoursField": "Acilis saatleri",
     "submit": "Kayit oner",
     "success": "Oneri kaydedildi ve onay bekliyor.",
@@ -188,6 +193,9 @@
     "logoHint": "JPEG, PNG veya WebP – maks. 5 MB",
     "socialPlaceholder": "kullanici adi veya https://…",
     "spotifyPlaceholder": "https://open.spotify.com/…",
+    "whatsappPlaceholder": "Telefon numarasi veya wa.me/…",
+    "mastodonPlaceholder": "@kullanici@sunucu.social",
+    "bandcampPlaceholder": "https://…",
     "edit": "Duzenle"
   },
   "footer": {
