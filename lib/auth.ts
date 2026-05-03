@@ -4,7 +4,13 @@ const SESSION_COOKIE = "admin_session"
 const SESSION_MAX_AGE = 60 * 60 * 24 // 24 h in seconds
 
 function jwtSecret() {
-  const secret = process.env.JWT_SECRET ?? "dev-secret-change-in-production"
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("JWT_SECRET environment variable must be set in production")
+    }
+    return new TextEncoder().encode("dev-secret-change-in-production")
+  }
   return new TextEncoder().encode(secret)
 }
 

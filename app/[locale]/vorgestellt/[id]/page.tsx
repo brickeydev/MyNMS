@@ -238,7 +238,9 @@ export default async function DirectoryDetailPage({
     <div className="space-y-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema).replace(/<\/script/gi, "<\\/script"),
+        }}
       />
       <div className="flex items-center gap-3">
         <Button asChild variant="outline" size="sm" className="rounded-full">

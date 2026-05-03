@@ -3,27 +3,38 @@ interface RateLimitEntry {
   resetAt: number
 }
 
-const store = new Map<string, RateLimitEntry>()
+function makeStore() {
+  const store = new Map<string, RateLimitEntry>()
+  return function check(
+    ip: string,
+    maxAttempts: number,
+    windowMs: number
+  ): { ok: boolean; retryAfter?: number } {
+    const now = Date.now()
+    const key = ip
+    const entry = store.get(key)
 
-const WINDOW_MS = 15 * 60 * 1000 // 15 minutes
-const MAX_ATTEMPTS = 5
+    if (!entry || entry.resetAt < now) {
+      store.set(key, { count: 1, resetAt: now + windowMs })
+      return { ok: true }
+    }
 
-export function checkRateLimit(ip: string): {
-  ok: boolean
-  retryAfter?: number
-} {
-  const now = Date.now()
-  const entry = store.get(ip)
+    if (entry.count >= maxAttempts) {
+      return { ok: false, retryAfter: Math.ceil((entry.resetAt - now) / 1000) }
+    }
 
-  if (!entry || entry.resetAt < now) {
-    store.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    entry.count++
     return { ok: true }
   }
+}
 
-  if (entry.count >= MAX_ATTEMPTS) {
-    return { ok: false, retryAfter: Math.ceil((entry.resetAt - now) / 1000) }
-  }
+const loginStore = makeStore()
+const postStore = makeStore()
 
-  entry.count++
-  return { ok: true }
+export function checkRateLimit(ip: string): { ok: boolean; retryAfter?: number } {
+  return loginStore(ip, 5, 15 * 60 * 1000)
+}
+
+export function checkPostRateLimit(ip: string): { ok: boolean; retryAfter?: number } {
+  return postStore(ip, 10, 60 * 1000)
 }

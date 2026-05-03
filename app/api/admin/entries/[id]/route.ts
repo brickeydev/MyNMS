@@ -2,22 +2,44 @@ import fs from "node:fs/promises"
 import { randomUUID } from "node:crypto"
 import path from "node:path"
 
+import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
+import { SESSION_COOKIE, verifyAdminJWT } from "@/lib/auth"
 import { db, PHOTO_DIR } from "@/lib/db"
 import type { EntryRecord } from "@/lib/types"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-function sanitizeFileName(name: string) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, "-")
+async function requireAdmin(): Promise<boolean> {
+  const jar = await cookies()
+  const token = jar.get(SESSION_COOKIE)?.value
+  if (!token) return false
+  return verifyAdminJWT(token)
+}
+
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024
+const ALLOWED_PHOTO_MIME = ["image/jpeg", "image/png", "image/webp"]
+
+function validateImageMagicBytes(buf: Buffer): boolean {
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return true
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return true
+  if (
+    buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 &&
+    buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50
+  ) return true
+  return false
 }
 
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
   const entry = db
     .prepare(
@@ -38,6 +60,10 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
   const formData = await request.formData()
 
@@ -67,11 +93,19 @@ export async function PATCH(
     await fs.unlink(path.join(PHOTO_DIR, photoPath)).catch(() => {})
     photoPath = null
   } else if (photo instanceof File && photo.size > 0) {
-    if (photoPath)
-      await fs.unlink(path.join(PHOTO_DIR, photoPath)).catch(() => {})
-    const extension = path.extname(photo.name) || ".jpg"
-    photoPath = `${randomUUID()}-${sanitizeFileName(`photo${extension}`)}`
+    if (photo.size > MAX_PHOTO_SIZE) {
+      return NextResponse.json({ error: "photo_too_large" }, { status: 400 })
+    }
+    if (!ALLOWED_PHOTO_MIME.includes(photo.type)) {
+      return NextResponse.json({ error: "photo_invalid_mime" }, { status: 400 })
+    }
     const buf = Buffer.from(await photo.arrayBuffer())
+    if (!validateImageMagicBytes(buf)) {
+      return NextResponse.json({ error: "photo_invalid_format" }, { status: 400 })
+    }
+    if (photoPath) await fs.unlink(path.join(PHOTO_DIR, photoPath)).catch(() => {})
+    const ext = photo.type === "image/png" ? ".png" : photo.type === "image/webp" ? ".webp" : ".jpg"
+    photoPath = `${randomUUID()}${ext}`
     await fs.mkdir(PHOTO_DIR, { recursive: true })
     await fs.writeFile(path.join(PHOTO_DIR, photoPath), buf)
   }
@@ -107,6 +141,10 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
 
   const existing = db

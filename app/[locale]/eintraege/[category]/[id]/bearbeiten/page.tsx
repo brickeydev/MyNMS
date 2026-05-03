@@ -81,7 +81,7 @@ function EntryEditContent({ params }: PageParams) {
 
   useEffect(() => {
     if (!resolvedParams) return
-    fetch(`/api/admin/entries/${resolvedParams.id}`)
+    fetch(`/api/entries/${resolvedParams.id}`)
       .then((r) => r.json())
       .then((data: EntryRecord) => {
         setEntry(data)

@@ -22,10 +22,20 @@ export async function GET(
 ) {
   const { filename } = await params
   const resolvedFile = decodeURIComponent(filename)
+
+  if (resolvedFile.includes("..") || resolvedFile.includes("/") || resolvedFile.includes("\\")) {
+    return NextResponse.json({ error: "invalid_filename" }, { status: 400 })
+  }
+
   const filePath = path.join(PHOTO_DIR, resolvedFile)
+  const resolvedDir = path.resolve(PHOTO_DIR)
+  const resolvedPath = path.resolve(filePath)
+  if (!resolvedPath.startsWith(resolvedDir + path.sep) && resolvedPath !== resolvedDir) {
+    return NextResponse.json({ error: "invalid_filename" }, { status: 400 })
+  }
 
   try {
-    const file = await fs.readFile(filePath)
+    const file = await fs.readFile(resolvedPath)
     const extension = path.extname(resolvedFile).toLowerCase()
 
     return new NextResponse(file, {
