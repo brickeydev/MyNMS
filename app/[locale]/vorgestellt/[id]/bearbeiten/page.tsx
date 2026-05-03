@@ -99,7 +99,7 @@ function DirectoryEditContent({ params }: PageParams) {
 
   useEffect(() => {
     if (!entryId) return
-    fetch(`/api/admin/directory/${entryId}`)
+    fetch(`/api/directory/${entryId}`)
       .then((r) => r.json())
       .then((data: DirectoryRecord) => {
         setEntry(data)

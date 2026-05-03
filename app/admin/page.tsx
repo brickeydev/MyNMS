@@ -1,7 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 import { Cat, Package, Star } from "lucide-react"
 
+import { SESSION_COOKIE, verifyAdminJWT } from "@/lib/auth"
 import { db } from "@/lib/db"
 
 export const metadata: Metadata = {
@@ -10,7 +13,12 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic"
 
-export default function AdminOverviewPage() {
+export default async function AdminOverviewPage() {
+  const jar = await cookies()
+  const token = jar.get(SESSION_COOKIE)?.value
+  if (!token || !(await verifyAdminJWT(token))) {
+    redirect("/admin/login")
+  }
   const pendingDirectory = (
     db
       .prepare("SELECT COUNT(*) as count FROM directory WHERE approved = 0")

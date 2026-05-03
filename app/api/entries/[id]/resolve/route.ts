@@ -3,6 +3,7 @@ import { timingSafeEqual } from "node:crypto"
 import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
+import { checkPostRateLimit } from "@/lib/ratelimit"
 import type { EntryRecord } from "@/lib/types"
 
 export const runtime = "nodejs"
@@ -21,6 +22,18 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown"
+  const rl = checkPostRateLimit(ip)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "too_many_requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } }
+    )
+  }
+
   const { id } = await params
 
   let token = ""
@@ -41,8 +54,8 @@ export async function PATCH(
     return NextResponse.json({ error: "not_found" }, { status: 404 })
   }
 
-  if (existing.owner_token && token) {
-    if (!safeCompare(token, existing.owner_token)) {
+  if (existing.owner_token) {
+    if (!token || !safeCompare(token, existing.owner_token)) {
       return NextResponse.json({ error: "forbidden" }, { status: 403 })
     }
   }

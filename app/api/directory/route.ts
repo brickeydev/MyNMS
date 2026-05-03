@@ -5,6 +5,7 @@ import path from "node:path"
 import { NextResponse } from "next/server"
 
 import { db, LOGO_DIR } from "@/lib/db"
+import { checkPostRateLimit } from "@/lib/ratelimit"
 import type { DirectoryCategory } from "@/lib/types"
 
 export const runtime = "nodejs"
@@ -71,6 +72,18 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown"
+  const rl = checkPostRateLimit(ip)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "too_many_requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } }
+    )
+  }
+
   const contentType = request.headers.get("content-type") ?? ""
   let fields: Record<string, string> = {}
   let logoPath: string | null = null
@@ -117,15 +130,23 @@ export async function POST(request: Request) {
     logoPath = fields.logo_path || null
   }
 
+  const VALID_DIR_CATEGORIES: DirectoryCategory[] = ["kultur", "sport", "handwerk", "vereine", "sonstiges"]
   const category = fields.category as DirectoryCategory | undefined
   const name = (fields.name ?? "").trim()
   const description = (fields.description ?? "").trim()
 
-  if (!category || !name || !description) {
+  if (!category || !VALID_DIR_CATEGORIES.includes(category) || !name || !description) {
     return NextResponse.json(
       { error: "missing_required_fields" },
       { status: 400 }
     )
+  }
+
+  if (name.length > 200) {
+    return NextResponse.json({ error: "name_too_long" }, { status: 400 })
+  }
+  if (description.length > 2000) {
+    return NextResponse.json({ error: "description_too_long" }, { status: 400 })
   }
 
   const ownerToken = randomUUID()

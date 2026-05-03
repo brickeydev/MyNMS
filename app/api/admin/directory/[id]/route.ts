@@ -2,13 +2,22 @@ import fs from "node:fs/promises"
 import { randomUUID } from "node:crypto"
 import path from "node:path"
 
+import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
+import { SESSION_COOKIE, verifyAdminJWT } from "@/lib/auth"
 import { db, LOGO_DIR } from "@/lib/db"
 import type { DirectoryRecord } from "@/lib/types"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
+
+async function requireAdmin(): Promise<boolean> {
+  const jar = await cookies()
+  const token = jar.get(SESSION_COOKIE)?.value
+  if (!token) return false
+  return verifyAdminJWT(token)
+}
 
 const MAX_LOGO_SIZE = 5 * 1024 * 1024
 const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"]
@@ -29,6 +38,10 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
   const entry = db
     .prepare(
@@ -51,6 +64,10 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
   const contentType = request.headers.get("content-type") ?? ""
 
@@ -162,6 +179,10 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const { id } = await params
 
   const existing = db

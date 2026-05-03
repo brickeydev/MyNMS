@@ -20,8 +20,36 @@ function safeCompare(a: string, b: string): boolean {
   }
 }
 
-function sanitizeFileName(name: string) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, "-")
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024
+const ALLOWED_PHOTO_MIME = ["image/jpeg", "image/png", "image/webp"]
+
+function validateImageMagicBytes(buf: Buffer): boolean {
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return true
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return true
+  if (
+    buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 &&
+    buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50
+  ) return true
+  return false
+}
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+  const entry = db
+    .prepare(
+      `SELECT id, created_at, category, type, title, description,
+              photo_path, lat, lng, contact, status
+       FROM entries WHERE id = ?`
+    )
+    .get(Number(id)) as EntryRecord | undefined
+
+  if (!entry) {
+    return NextResponse.json({ error: "not_found" }, { status: 404 })
+  }
+  return NextResponse.json(entry)
 }
 
 export async function PATCH(
@@ -63,18 +91,37 @@ export async function PATCH(
     )
   }
 
+  if (title.length > 100) {
+    return NextResponse.json({ error: "title_too_long" }, { status: 400 })
+  }
+  if (description.length > 2000) {
+    return NextResponse.json({ error: "description_too_long" }, { status: 400 })
+  }
+  if (contact && contact.length > 200) {
+    return NextResponse.json({ error: "contact_too_long" }, { status: 400 })
+  }
+
   let photoPath = existing.photo_path
 
   if (removePhoto && photoPath) {
     await fs.unlink(path.join(PHOTO_DIR, photoPath)).catch(() => {})
     photoPath = null
   } else if (photo instanceof File && photo.size > 0) {
+    if (photo.size > MAX_PHOTO_SIZE) {
+      return NextResponse.json({ error: "photo_too_large" }, { status: 400 })
+    }
+    if (!ALLOWED_PHOTO_MIME.includes(photo.type)) {
+      return NextResponse.json({ error: "photo_invalid_mime" }, { status: 400 })
+    }
+    const buffer = Buffer.from(await photo.arrayBuffer())
+    if (!validateImageMagicBytes(buffer)) {
+      return NextResponse.json({ error: "photo_invalid_format" }, { status: 400 })
+    }
     if (photoPath) {
       await fs.unlink(path.join(PHOTO_DIR, photoPath)).catch(() => {})
     }
-    const extension = path.extname(photo.name) || ".jpg"
-    photoPath = `${randomUUID()}-${sanitizeFileName(`photo${extension}`)}`
-    const buffer = Buffer.from(await photo.arrayBuffer())
+    const ext = photo.type === "image/png" ? ".png" : photo.type === "image/webp" ? ".webp" : ".jpg"
+    photoPath = `${randomUUID()}${ext}`
     await fs.mkdir(PHOTO_DIR, { recursive: true })
     await fs.writeFile(path.join(PHOTO_DIR, photoPath), buffer)
   }

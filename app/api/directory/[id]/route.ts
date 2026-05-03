@@ -40,6 +40,27 @@ function validateImageMagicBytes(buf: Buffer): boolean {
   return false
 }
 
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+  const entry = db
+    .prepare(
+      `SELECT id, created_at, category, name, description, logo_path, address, website,
+              phone, email, social_instagram, social_facebook, social_spotify, social_tiktok,
+              social_soundcloud, social_youtube, social_linkedin, social_whatsapp, social_twitter,
+              social_bluesky, social_mastodon, social_bandcamp, opening_hours, lat, lng, approved
+       FROM directory WHERE id = ?`
+    )
+    .get(Number(id)) as DirectoryRecord | undefined
+
+  if (!entry) {
+    return NextResponse.json({ error: "not_found" }, { status: 404 })
+  }
+  return NextResponse.json(entry)
+}
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
